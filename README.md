@@ -6,4 +6,4 @@ This repository contains all the VHDL codes I practised as a part of the Compute
 
 ## Licence
 
-[MIT]()
+[MIT](https://github.com/subhadeeproy3902/PCC-CS492/blob/main/LICENSE)
