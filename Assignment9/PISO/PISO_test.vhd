@@ -3,20 +3,18 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
+ENTITY piso_test IS
+END piso_test;
  
-ENTITY PISOO_test IS
-END PISOO_test;
+ARCHITECTURE behavior OF piso_test IS 
  
-ARCHITECTURE behavior OF PISOO_test IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
- 
-    COMPONENT PISO_rtl
+    COMPONENT piso_rtl
     PORT(
          Data : IN  std_logic_vector(3 downto 0);
          Rst : IN  std_logic;
          CLK : IN  std_logic;
          Load : IN  std_logic;
+         Dout_vector : OUT  std_logic_vector(3 downto 0);
          Dout : OUT  std_logic
         );
     END COMPONENT;
@@ -29,6 +27,7 @@ ARCHITECTURE behavior OF PISOO_test IS
    signal Load : std_logic := '0';
 
  	--Outputs
+   signal Dout_vector : std_logic_vector(3 downto 0);
    signal Dout : std_logic;
 
    -- Clock period definitions
@@ -37,11 +36,12 @@ ARCHITECTURE behavior OF PISOO_test IS
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: PISO_rtl PORT MAP (
+   uut: piso_rtl PORT MAP (
           Data => Data,
           Rst => Rst,
           CLK => CLK,
           Load => Load,
+          Dout_vector => Dout_vector,
           Dout => Dout
         );
 
@@ -58,11 +58,20 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      Data<="0001";
-		Rst<='0';
-		Load<='1';
+      Rst <= '1';
 		wait for 2 ps;
 		
+		Rst <= '0';
+		Load <= '0';
+		Data <= "1110";
+		wait for 2 ps;
+		
+		shift : for i in 0 to 3 loop
+			Rst <= '0';
+			Load <= '1';
+			Data <= "1110";
+			wait for 2 ps;
+		end loop;
    end process;
 
 END;
